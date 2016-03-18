@@ -6,9 +6,6 @@ LDFLAGS=-ldflags "-X $(VERSION) -X $(BUILDSTAMP) -X $(GIT_HASH)"
 PROG=out/docit
 
 help:
-	@echo "Usage:"
-	@echo "        make command"
-	@echo ""
 	@cat Makefile
 
 deps:
