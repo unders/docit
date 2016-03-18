@@ -1,10 +1,20 @@
-package main
+package cli
 
 import (
 	"flag"
 	"fmt"
 	"os"
 	"strings"
+)
+
+var (
+	// Version the version of the prog.
+	Version = "No Version Provided"
+	// Buildstamp the time the prog was built.
+	Buildstamp = "No Buildstamp provided"
+	// Githash the git commit hash
+	Githash = "No Githash provided"
+	prog    = "docit"
 )
 
 // Flags read from the command line.
@@ -21,7 +31,16 @@ const (
 	portDefault  = "80"
 )
 
-func usage() {
+// Arg contains the flag values read from the command line
+// or the default flag values if they are not supplied.
+type Arg struct {
+	Index string
+	Root  string
+	Port  string
+}
+
+// Usage prints how to use the program.
+func Usage() {
 	fmt.Println("Usage: ")
 	fmt.Println("")
 	fmt.Printf("    %s serve -index=Readme.md -root=doc -port=8080\n", prog)
@@ -51,7 +70,7 @@ func printVersion() {
 
 func setFlags() *flag.FlagSet {
 	f := flag.CommandLine
-	f.Usage = usage
+	f.Usage = Usage
 
 	f.StringVar(&index, "index", indexDefault, "Page to show for '/'")
 	f.StringVar(&root, "root", rootDefault, "Root directory to serve files from")
@@ -60,28 +79,30 @@ func setFlags() *flag.FlagSet {
 	return f
 }
 
-func input() (string, context) {
+// Parse returns the command and a context with
+// the parsed flags from the command line.
+func Parse() (string, Arg) {
 	argLen := len(os.Args)
 
 	f := setFlags()
 
 	if argLen < 2 {
-		return "", context{}
+		return "", Arg{}
 	}
 
 	cmd := os.Args[1]
 	if cmd != "serve" {
-		return "", context{}
+		return "", Arg{}
 	}
 
 	for _, flag := range os.Args[2:] {
 		if !strings.HasPrefix(flag, "-") {
 			fmt.Println("flag should be prefixed with a - sign: ", flag)
-			return "", context{}
+			return "", Arg{}
 		}
 	}
 
 	_ = f.Parse(os.Args[2:])
 
-	return cmd, context{index: index, root: root, port: port}
+	return cmd, Arg{Index: index, Root: root, Port: port}
 }
