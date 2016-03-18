@@ -1,0 +1,17 @@
+#!/usr/bin/env bash
+
+main() {
+	cmd=$1
+
+	if [ "$cmd" == "install" ]; then
+		echo "Installing dependencies..."
+		go get -u github.com/russross/blackfriday
+		# go get -u github.com/shurcooL/markdownfmt
+		exit 0
+	fi
+
+	echo "Usage:"
+	echo "        deps install"
+}
+
+main $@
