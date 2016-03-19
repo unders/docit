@@ -1,4 +1,4 @@
-.PHONY: help deps install gofmt oracle depgraph check release clean
+.PHONY: help deps install gofmt oracle depgraph check release log shortlog clean
 VERSION="github.com/unders/docit/cli.Version=v1.0.0"
 BUILDSTAMP="github.com/unders/docit/cli.Buildstamp=$(shell date -u '+%Y-%m-%dT%I:%M%p')"
 GIT_HASH="github.com/unders/docit/cli.Githash=$(shell git rev-parse HEAD)"
@@ -29,6 +29,12 @@ check:
 
 release: clean check
 	go build $(LDFLAGS) -o $(PROG)
+
+log:
+	@git log --graph --oneline --decorate
+
+shortlog:
+	@git shortlog
 
 clean:
 	@if [ -f $(PROG) ] ; then rm $(PROG) ; fi
