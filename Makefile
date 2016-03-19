@@ -24,7 +24,7 @@ depgraph:
 	godepgraph -horizontal github.com/unders/docit | dot -Tsvg -o doc/godepgraph.svg
 
 check:
-	@ gofmt -l . | grep -vE ''
+	gofmt -l . | grep -vE ''
 	gometalinter ./... --deadline=10s
 
 release: clean check
