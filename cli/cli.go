@@ -28,7 +28,7 @@ var (
 const (
 	indexDefault = "index.md"
 	rootDefault  = "./"
-	portDefault  = "80"
+	portDefault  = "8080"
 )
 
 // Arg contains the flag values read from the command line
