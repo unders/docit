@@ -44,6 +44,12 @@ func Usage() {
 	fmt.Println("Usage: ")
 	fmt.Println("")
 	fmt.Printf("    %s serve -index=Readme.md -root=doc -port=8080\n", prog)
+	fmt.Printf("    %s version\n", prog)
+	fmt.Println("")
+	fmt.Println("")
+	fmt.Println("Commands:")
+	fmt.Println("    serve    - serves files from given root dir")
+	fmt.Println("    version  - prints the version of the program")
 	fmt.Println("")
 	fmt.Println("")
 	fmt.Println("Flags:")
@@ -59,10 +65,11 @@ func Usage() {
 	fmt.Println("")
 	fmt.Println("")
 	fmt.Println("Version")
-	printVersion()
+	PrintVersion()
 }
 
-func printVersion() {
+// PrintVersion prints the version of the prog.
+func PrintVersion() {
 	fmt.Printf("    Version        : %s\n", Version)
 	fmt.Printf("    UTC Build Time : %s\n", Buildstamp)
 	fmt.Printf("    Git Commit Hash: %s\n", Githash)
@@ -91,7 +98,7 @@ func Parse() (string, Arg) {
 	}
 
 	cmd := os.Args[1]
-	if cmd != "serve" {
+	if cmd != "serve" && cmd != "version" {
 		return "", Arg{}
 	}
 
