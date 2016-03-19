@@ -1,4 +1,4 @@
-.PHONY: help deps install release clean
+.PHONY: help deps install oracle depgraph check release clean
 VERSION="github.com/unders/docit/cli.Version=v1.0.0"
 BUILDSTAMP="github.com/unders/docit/cli.Buildstamp=$(shell date -u '+%Y-%m-%dT%I:%M%p')"
 GIT_HASH="github.com/unders/docit/cli.Githash=$(shell git rev-parse HEAD)"
@@ -13,6 +13,15 @@ deps:
 
 install:
 	go install $(LDFLAGS)
+
+oracle:
+	pythia github.com/unders/docit
+
+depgraph:
+	godepgraph -horizontal github.com/unders/docit | dot -Tsvg -o doc/godepgraph.svg
+
+check:
+	@echo "check"
 
 release: clean
 	go build $(LDFLAGS) -o $(PROG)
