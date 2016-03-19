@@ -11,6 +11,8 @@ main() {
 		go get golang.org/x/tools/cmd/oracle
 		go get github.com/fzipp/pythia
 		go get github.com/kisielk/godepgraph
+		go get github.com/alecthomas/gometalinter
+		gometalinter --install --update
 
 		echo "Installing native OSX dev dependencies..."
 		brew install graphviz
