@@ -1,5 +1,5 @@
 # Docit
-Serve markdow files in directory at a HTTP endpoint.
+Serve markdown files in directory at a HTTP endpoint.
 
 ## Links
 * https://github.com/russross/blackfriday
