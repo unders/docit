@@ -21,7 +21,7 @@ oracle:
 	pythia github.com/unders/docit
 
 depgraph:
-	godepgraph -horizontal github.com/unders/docit | dot -Tsvg -o doc/godepgraph.svg
+	godepgraph -s -horizontal github.com/unders/docit | dot -Tsvg -o doc/godepgraph.svg
 
 check:
 	gofmt -l . | grep -vE ''
