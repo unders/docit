@@ -38,10 +38,9 @@ func serve(arg cli.Arg) {
 			req.URL.Path = upath
 		}
 
-		// Parse and serve default Markdown file relative to root dir.
+		// Redirect to index.md page.
 		if req.URL.Path == "/" {
-			html, code := loadPage(arg.Root + "/" + arg.Index)
-			template.Render(w, html, code)
+			http.Redirect(w, req, "/"+arg.Index, http.StatusSeeOther)
 			return
 		}
 

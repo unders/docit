@@ -44,6 +44,7 @@ func Usage() {
 	fmt.Println("Usage: ")
 	fmt.Println("")
 	fmt.Printf("    %s serve -index=Readme.md -root=doc -port=8080\n", prog)
+	fmt.Printf("    %s serve -index=landing/index.md -root=home/Projects -port=8080\n", prog)
 	fmt.Printf("    %s version\n", prog)
 	fmt.Println("")
 	fmt.Println("")
