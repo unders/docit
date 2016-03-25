@@ -31,9 +31,15 @@ p, li {
 }
 p,
 pre,
+table,
 ul,
 ol {
     margin: 20px;
+}
+
+td,
+th {
+    padding-right: 20px;
 }
 pre {
     background: #EFEFEF;
