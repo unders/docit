@@ -7,9 +7,26 @@
   <meta name="description" content="">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <!--  <link rel="stylesheet" href="/assets/css/main.css"> -->
+ <link rel="stylesheet" href="/embedded_assets/css/style.css">
 </head>
 <body>
-  {{.Body}}
+  <div id="topbar" class="wide">
+	<div class="container">
+	  <div class="top-heading">
+		<a href="/">Project Name</a>
+	  </div>
+	  <div id="menu">
+		<a href="/">Home</a>
+		<a href="#">Projects</a>
+		<a href="#">Blog</a>
+		<a href="#" class="last">Help</a>
+	  </div>
+	</div>
+  </div>
+  <div id="page" class="wide">
+	<div class="container">
+	  {{.Body}}
+	</div>
+  </div>
 </body>
 </html>
