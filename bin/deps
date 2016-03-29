@@ -18,8 +18,9 @@ main() {
 		go get github.com/alecthomas/gometalinter
 		gometalinter --install --update
 
-		echo "Installing native OSX dev dependencies..."
-		brew install graphviz
+		# FIXME: Check if OSX and only then install it.
+		# echo "Installing native OSX dev dependencies..."
+		# brew install graphviz
 		exit 0
 	fi
 

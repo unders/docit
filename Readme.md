@@ -1,5 +1,18 @@
 # Docit
-Serve markdown files in directory at a HTTP endpoint.
+Browse markdown files in directories at a HTTP endpoint.
+
+## Install
+
+
+## Usage
+command `docit` shows how to use it.
+
+### For developer
+
+Install go dependencies.
+```
+make deps
+```
 
 ## Links
 * https://github.com/russross/blackfriday
