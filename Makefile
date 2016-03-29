@@ -25,7 +25,7 @@ depgraph:
 
 check:
 	gofmt -l . | grep -vE ''
-	gometalinter ./... --deadline=10s
+	gometalinter ./... --deadline=25s
 
 release: clean check
 	go build $(LDFLAGS) -o $(PROG)
