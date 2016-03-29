@@ -1,9 +1,12 @@
 .PHONY: help deps install gofmt oracle depgraph check release log shortlog clean
-VERSION="github.com/unders/docit/cli.Version=v1.0.0"
+RELEASE=v1.0.0
+VERSION="github.com/unders/docit/cli.Version=$(RELEASE)"
 BUILDSTAMP="github.com/unders/docit/cli.Buildstamp=$(shell date -u '+%Y-%m-%dT%I:%M%p')"
 GIT_HASH="github.com/unders/docit/cli.Githash=$(shell git rev-parse HEAD)"
 LDFLAGS=-ldflags "-X $(VERSION) -X $(BUILDSTAMP) -X $(GIT_HASH)"
-PROG=out/docit
+GOOS ?= darwin
+GOARCH ?= amd64
+PROG=out/docit_$(RELEASE)_$(GOOS)_$(GOARCH)
 
 help:
 	@cat Makefile
