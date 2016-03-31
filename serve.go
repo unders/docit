@@ -56,7 +56,7 @@ func serve(arg cli.Arg) {
 	}
 	http.HandleFunc("/", root)
 
-	template.Init(rice.MustFindBox("embedded_assets/tmpl"))
+	template.Init(rice.MustFindBox("embedded_assets/tmpl"), template.Data{Name: arg.Name})
 
 	box := rice.MustFindBox("embedded_assets")
 	embeddedFileServer := http.StripPrefix("/embedded_assets/", http.FileServer(box.HTTPBox()))

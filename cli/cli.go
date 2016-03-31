@@ -22,6 +22,7 @@ var (
 	index string
 	root  string
 	port  string
+	name  string
 )
 
 // Default flag values when not supplied from the command line.
@@ -29,6 +30,7 @@ const (
 	indexDefault = "index.md"
 	rootDefault  = "./"
 	portDefault  = "8080"
+	nameDefault  = "docit"
 )
 
 // Arg contains the flag values read from the command line
@@ -37,6 +39,7 @@ type Arg struct {
 	Index string
 	Root  string
 	Port  string
+	Name  string
 }
 
 // Usage prints how to use the program.
@@ -60,6 +63,7 @@ func Usage() {
 	fmt.Println("Examples:")
 	fmt.Printf("    %s serve \n", prog)
 	fmt.Printf("    %s serve -index=Readme.md\n", prog)
+	fmt.Printf("    %s serve -name=ProjectName\n", prog)
 	fmt.Printf("    %s serve -root=test\n", prog)
 	fmt.Printf("    %s serve -index=index.md -root=doc\n", prog)
 	fmt.Printf("    %s serve -index=index.md -root=doc -port=5000\n", prog)
@@ -83,6 +87,7 @@ func setFlags() *flag.FlagSet {
 	f.StringVar(&index, "index", indexDefault, "Page to show for '/'")
 	f.StringVar(&root, "root", rootDefault, "Root directory to serve files from")
 	f.StringVar(&port, "port", portDefault, "The port")
+	f.StringVar(&name, "name", nameDefault, "The name of the project")
 
 	return f
 }
@@ -112,5 +117,5 @@ func Parse() (string, Arg) {
 
 	_ = f.Parse(os.Args[2:])
 
-	return cmd, Arg{Index: index, Root: root, Port: port}
+	return cmd, Arg{Index: index, Root: root, Port: port, Name: name}
 }

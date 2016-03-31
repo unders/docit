@@ -13,10 +13,18 @@ type Page struct {
 	Tmpl *tmpl.Template
 }
 
+// Data content visible on the HTML page.
+type Data struct {
+	Name string
+}
+
 var page Page
+var data Data
 
 // Init initialize template
-func Init(box *rice.Box) {
+func Init(box *rice.Box, d Data) {
+	data = d
+
 	layout, err := box.String("layout.html")
 	if err != nil {
 		log.Fatal(err)
@@ -32,8 +40,10 @@ func Init(box *rice.Box) {
 func Render(w http.ResponseWriter, b []byte, statusCode int) {
 	body := struct {
 		Body tmpl.HTML
+		Name string
 	}{
 		Body: tmpl.HTML(b),
+		Name: data.Name,
 	}
 
 	w.WriteHeader(statusCode)
