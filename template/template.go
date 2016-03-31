@@ -15,13 +15,9 @@ type Page struct {
 
 var page Page
 
-func init() {
-	templateBox, err := rice.FindBox("../embedded_assets/tmpl")
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	layout, err := templateBox.String("layout.html")
+// Init initialize template
+func Init(box *rice.Box) {
+	layout, err := box.String("layout.html")
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -32,7 +28,7 @@ func init() {
 	}
 }
 
-// Render constructs a web page from a markdown string.
+// Render a HTML page
 func Render(w http.ResponseWriter, b []byte, statusCode int) {
 	body := struct {
 		Body tmpl.HTML

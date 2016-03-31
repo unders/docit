@@ -27,11 +27,12 @@ depgraph:
 	godepgraph -s -horizontal github.com/unders/docit | dot -Tsvg -o doc/godepgraph.svg
 
 check:
-	gofmt -l . | grep -vE ''
 	gometalinter ./... --deadline=25s
 
 release: clean check
+	rice embed-go
 	go build $(LDFLAGS) -o $(PROG)
+	rm rice-box.go
 
 log:
 	@git log --graph --oneline --decorate

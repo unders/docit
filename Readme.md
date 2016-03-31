@@ -1,11 +1,12 @@
 # Docit
 Browse markdown files in directories at a HTTP endpoint.
 
-## Install
-
+## Why
 
 ## Usage
-command `docit` shows how to use it.
+Command `docit` shows how to use it.
+
+## Install
 
 ### For developer
 
