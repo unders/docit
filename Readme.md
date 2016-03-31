@@ -6,9 +6,15 @@ Browse markdown files in directories at a HTTP endpoint.
 ## Usage
 Command `docit` shows how to use it.
 
+**Examples**:
+```
+docit serve -index=Readme.md -root=doc -port=8080 -name=Coolio
+docit serve -index=landing/index.md -root=home/Projects -port=8080
+```
+
 ## Install
 
-### For developer
+## For developer
 
 Install go dependencies.
 ```
