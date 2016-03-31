@@ -1,5 +1,5 @@
 .PHONY: help deps install gofmt oracle depgraph check release log shortlog clean
-RELEASE=v1.0.0
+RELEASE=v1.0.1
 VERSION="github.com/unders/docit/cli.Version=$(RELEASE)"
 BUILDSTAMP="github.com/unders/docit/cli.Buildstamp=$(shell date -u '+%Y-%m-%dT%I:%M%p')"
 GIT_HASH="github.com/unders/docit/cli.Githash=$(shell git rev-parse HEAD)"
