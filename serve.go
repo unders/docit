@@ -14,7 +14,13 @@ import (
 )
 
 const notFoundMsg = "<pre style='word-wrap: break-word;" +
-	"white-space: pre-wrap;'>404 page not found </pre>"
+	"white-space: pre-wrap;'>404 page not found</pre>"
+
+const projectNotFoundMsg = "<pre style='word-wrap: break-word;" +
+	"white-space: pre-wrap;'>404 No projects found</pre>"
+
+const projectDirErrMsg = "<pre style='word-wrap: break-word;" +
+	"white-space: pre-wrap;'>Projects dir could not be read</pre>"
 
 func loadPage(filename string) ([]byte, int) {
 	markdown, err := ioutil.ReadFile(filename)
@@ -60,7 +66,9 @@ func serve(arg cli.Arg) {
 		// Serve file relative to root dir.
 		fileServer.ServeHTTP(w, req)
 	}
+
 	http.HandleFunc("/", root)
+	http.HandleFunc("/projects", projects(arg))
 
 	data := template.Data{
 		Name: arg.Name,
@@ -73,4 +81,40 @@ func serve(arg cli.Arg) {
 
 	fmt.Printf("Serving static files at http://0.0.0.0:%s from dir %s\n", arg.Port, arg.Root)
 	log.Fatal(http.ListenAndServe(":"+arg.Port, nil))
+}
+
+func projects(arg cli.Arg) func(http.ResponseWriter, *http.Request) {
+	return func(w http.ResponseWriter, req *http.Request) {
+		dir, err := ioutil.ReadDir(arg.Root)
+
+		if err != nil {
+			log.Printf("Could not read root directory.\n")
+			template.Render(w, []byte(projectDirErrMsg),
+				http.StatusInternalServerError)
+
+		}
+
+		length := len(dir)
+
+		if length == 0 {
+			log.Printf("No directory found, len(dir) == %d\n", length)
+			template.Render(w, []byte(projectNotFoundMsg),
+				http.StatusNotFound)
+		}
+
+		projects := make([]template.Project, length)
+
+		for i, file := range dir {
+			if file.IsDir() {
+				name := file.Name()
+
+				proj := template.Project{
+					Link: strings.Join([]string{"/", name, "/Readme.md"}, ""),
+					Name: name,
+				}
+				projects[i] = proj
+			}
+		}
+		template.RenderProjects(w, projects)
+	}
 }

@@ -13,6 +13,12 @@ type Page struct {
 	Tmpl *tmpl.Template
 }
 
+// Project struct for creating a link to a project.
+type Project struct {
+	Link string
+	Name string
+}
+
 // Data content visible on the HTML page.
 type Data struct {
 	Name string
@@ -39,17 +45,39 @@ func Init(box *rice.Box, d Data) {
 // Render a HTML page
 func Render(w http.ResponseWriter, b []byte, statusCode int) {
 	body := struct {
-		Body tmpl.HTML
-		Name string
+		Body     tmpl.HTML
+		Name     string
+		Projects []Project
+		HasProj  bool
 	}{
 		Body: tmpl.HTML(b),
 		Name: data.Name,
 	}
 
+	render(w, body, statusCode)
+}
+
+// RenderProjects render projects
+func RenderProjects(w http.ResponseWriter, p []Project) {
+	body := struct {
+		Body     tmpl.HTML
+		Name     string
+		Projects []Project
+		HasProj  bool
+	}{
+		Name:     data.Name,
+		Projects: p,
+		HasProj:  true,
+	}
+
+	render(w, body, http.StatusOK)
+}
+
+func render(w http.ResponseWriter, data interface{}, statusCode int) {
 	w.WriteHeader(statusCode)
 
-	if err := page.Tmpl.Execute(w, body); err != nil {
-		log.Printf("template.Render(w, makdown, %d). Error: %v", statusCode, err)
+	if err := page.Tmpl.Execute(w, data); err != nil {
+		log.Printf("template.render. status = %d, error = %v", statusCode, err)
 		http.Error(w, "500: Internal Server Error", http.StatusInternalServerError)
 	}
 }
