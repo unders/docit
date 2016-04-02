@@ -23,6 +23,7 @@ var (
 	root  string
 	port  string
 	name  string
+	help  string
 )
 
 // Default flag values when not supplied from the command line.
@@ -31,6 +32,7 @@ const (
 	rootDefault  = "./"
 	portDefault  = "8080"
 	nameDefault  = "docit"
+	helpDefault  = "help.md"
 )
 
 // Arg contains the flag values read from the command line
@@ -40,13 +42,14 @@ type Arg struct {
 	Root  string
 	Port  string
 	Name  string
+	Help  string
 }
 
 // Usage prints how to use the program.
 func Usage() {
 	fmt.Println("Usage: ")
 	fmt.Println("")
-	fmt.Printf("    %s serve -index=Readme.md -root=doc -port=8080\n", prog)
+	fmt.Printf("    %s serve -index=Readme.md -help=help.md -root=doc -port=8080\n", prog)
 	fmt.Printf("    %s serve -index=landing/index.md -root=home/Projects -port=8080\n", prog)
 	fmt.Printf("    %s version\n", prog)
 	fmt.Println("")
@@ -63,10 +66,12 @@ func Usage() {
 	fmt.Println("Examples:")
 	fmt.Printf("    %s serve \n", prog)
 	fmt.Printf("    %s serve -index=Readme.md\n", prog)
+	fmt.Printf("    %s serve -help=help.md\n", prog)
 	fmt.Printf("    %s serve -name=ProjectName\n", prog)
 	fmt.Printf("    %s serve -root=test\n", prog)
 	fmt.Printf("    %s serve -index=index.md -root=doc\n", prog)
 	fmt.Printf("    %s serve -index=index.md -root=doc -port=5000\n", prog)
+	fmt.Printf("    %s serve -index=landing/index.md -root=test/Projects -help=landing/help.md", prog)
 	fmt.Println("")
 	fmt.Println("")
 	fmt.Println("Version")
@@ -88,6 +93,8 @@ func setFlags() *flag.FlagSet {
 	f.StringVar(&root, "root", rootDefault, "Root directory to serve files from")
 	f.StringVar(&port, "port", portDefault, "The port")
 	f.StringVar(&name, "name", nameDefault, "The name of the project")
+	f.StringVar(&help, "help", helpDefault,
+		"The help page to show when a user clicks on the help link.")
 
 	return f
 }
@@ -117,5 +124,11 @@ func Parse() (string, Arg) {
 
 	_ = f.Parse(os.Args[2:])
 
-	return cmd, Arg{Index: index, Root: root, Port: port, Name: name}
+	return cmd, Arg{
+		Index: index,
+		Root:  root,
+		Port:  port,
+		Name:  name,
+		Help:  help,
+	}
 }

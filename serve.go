@@ -44,6 +44,12 @@ func serve(arg cli.Arg) {
 			return
 		}
 
+		// Redirect to help.md page.
+		if req.URL.Path == "/help" {
+			http.Redirect(w, req, "/"+arg.Help, http.StatusSeeOther)
+			return
+		}
+
 		// Parse and serve given Markdown file relative to root dir.
 		if strings.HasSuffix(req.URL.Path, ".md") {
 			html, code := loadPage(arg.Root + req.URL.Path)
@@ -56,7 +62,10 @@ func serve(arg cli.Arg) {
 	}
 	http.HandleFunc("/", root)
 
-	template.Init(rice.MustFindBox("embedded_assets/tmpl"), template.Data{Name: arg.Name})
+	data := template.Data{
+		Name: arg.Name,
+	}
+	template.Init(rice.MustFindBox("embedded_assets/tmpl"), data)
 
 	box := rice.MustFindBox("embedded_assets")
 	embeddedFileServer := http.StripPrefix("/embedded_assets/", http.FileServer(box.HTTPBox()))
