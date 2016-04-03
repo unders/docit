@@ -19,9 +19,19 @@ type Project struct {
 	Name string
 }
 
+// Member struct for creating a Member page.
+type Member struct {
+	Email string
+}
+
 // Data content visible on the HTML page.
 type Data struct {
-	Name string
+	Name      string
+	Body      tmpl.HTML
+	Projects  []Project
+	HasProj   bool
+	Members   []Member
+	HasMember bool
 }
 
 var page Page
@@ -44,39 +54,40 @@ func Init(box *rice.Box, d Data) {
 
 // Render a HTML page
 func Render(w http.ResponseWriter, b []byte, statusCode int) {
-	body := struct {
-		Body     tmpl.HTML
-		Name     string
-		Projects []Project
-		HasProj  bool
-	}{
+	d := Data{
 		Body: tmpl.HTML(b),
 		Name: data.Name,
 	}
 
-	render(w, body, statusCode)
+	render(w, d, statusCode)
 }
 
 // RenderProjects render projects
 func RenderProjects(w http.ResponseWriter, p []Project) {
-	body := struct {
-		Body     tmpl.HTML
-		Name     string
-		Projects []Project
-		HasProj  bool
-	}{
+	d := Data{
 		Name:     data.Name,
 		Projects: p,
 		HasProj:  true,
 	}
 
-	render(w, body, http.StatusOK)
+	render(w, d, http.StatusOK)
 }
 
-func render(w http.ResponseWriter, data interface{}, statusCode int) {
+// RenderMembers render members
+func RenderMembers(w http.ResponseWriter, m []Member) {
+	d := Data{
+		Name:      data.Name,
+		Members:   m,
+		HasMember: true,
+	}
+
+	render(w, d, http.StatusOK)
+}
+
+func render(w http.ResponseWriter, d Data, statusCode int) {
 	w.WriteHeader(statusCode)
 
-	if err := page.Tmpl.Execute(w, data); err != nil {
+	if err := page.Tmpl.Execute(w, d); err != nil {
 		log.Printf("template.render. status = %d, error = %v", statusCode, err)
 		http.Error(w, "500: Internal Server Error", http.StatusInternalServerError)
 	}

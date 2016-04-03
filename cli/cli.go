@@ -19,30 +19,33 @@ var (
 
 // Flags read from the command line.
 var (
-	index string
-	root  string
-	port  string
-	name  string
-	help  string
+	index   string
+	root    string
+	port    string
+	name    string
+	help    string
+	members string
 )
 
 // Default flag values when not supplied from the command line.
 const (
-	indexDefault = "index.md"
-	rootDefault  = "./"
-	portDefault  = "8080"
-	nameDefault  = "docit"
-	helpDefault  = "help.md"
+	indexDefault   = "index.md"
+	rootDefault    = "./"
+	portDefault    = "8080"
+	nameDefault    = "docit"
+	helpDefault    = "help.md"
+	MembersDefault = ""
 )
 
 // Arg contains the flag values read from the command line
 // or the default flag values if they are not supplied.
 type Arg struct {
-	Index string
-	Root  string
-	Port  string
-	Name  string
-	Help  string
+	Index      string
+	Root       string
+	Port       string
+	Name       string
+	Help       string
+	MemberFile string
 }
 
 // Usage prints how to use the program.
@@ -68,6 +71,7 @@ func Usage() {
 	fmt.Printf("    %s serve -index=Readme.md\n", prog)
 	fmt.Printf("    %s serve -help=help.md\n", prog)
 	fmt.Printf("    %s serve -name=ProjectName\n", prog)
+	fmt.Printf("    %s serve -members=member-file\n", prog)
 	fmt.Printf("    %s serve -root=test\n", prog)
 	fmt.Printf("    %s serve -index=index.md -root=doc\n", prog)
 	fmt.Printf("    %s serve -index=index.md -root=doc -port=5000\n", prog)
@@ -94,7 +98,9 @@ func setFlags() *flag.FlagSet {
 	f.StringVar(&port, "port", portDefault, "The port")
 	f.StringVar(&name, "name", nameDefault, "The name of the project")
 	f.StringVar(&help, "help", helpDefault,
-		"The help page to show when a user clicks on the help link.")
+		"The help page to show when a user clicks on the help link")
+	f.StringVar(&members, "members", MembersDefault,
+		"Path to a file containing emails")
 
 	return f
 }
@@ -125,10 +131,11 @@ func Parse() (string, Arg) {
 	_ = f.Parse(os.Args[2:])
 
 	return cmd, Arg{
-		Index: index,
-		Root:  root,
-		Port:  port,
-		Name:  name,
-		Help:  help,
+		Index:      index,
+		Root:       root,
+		Port:       port,
+		Name:       name,
+		Help:       help,
+		MemberFile: members,
 	}
 }

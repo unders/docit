@@ -1,10 +1,12 @@
 package main
 
 import (
+	"bufio"
 	"fmt"
 	"io/ioutil"
 	"log"
 	"net/http"
+	"os"
 	"strings"
 
 	"github.com/GeertJohan/go.rice"
@@ -69,6 +71,10 @@ func serve(arg cli.Arg) {
 
 	http.HandleFunc("/", root)
 	http.HandleFunc("/projects", projects(arg))
+	if arg.MemberFile != "" {
+		path := arg.Root + "/" + arg.MemberFile
+		http.HandleFunc("/members", members(path))
+	}
 
 	data := template.Data{
 		Name: arg.Name,
@@ -117,4 +123,43 @@ func projects(arg cli.Arg) func(http.ResponseWriter, *http.Request) {
 		}
 		template.RenderProjects(w, projects)
 	}
+}
+
+func members(path string) func(w http.ResponseWriter, req *http.Request) {
+	m := readMembers(path)
+
+	length := len(m)
+
+	members := make([]template.Member, length)
+
+	for i, mm := range m {
+		members[i].Email = mm
+	}
+
+	return func(w http.ResponseWriter, req *http.Request) {
+		template.RenderMembers(w, members)
+	}
+}
+
+func readMembers(path string) []string {
+	var members []string
+
+	file, err := os.Open(path)
+	if err != nil {
+		log.Fatalf("Could not open file %s, err %v", path, err)
+	}
+	defer file.Close()
+
+	scanner := bufio.NewScanner(file)
+	scanner.Split(bufio.ScanLines)
+
+	for scanner.Scan() {
+		members = append(members, scanner.Text())
+	}
+
+	if err := scanner.Err(); err != nil {
+		log.Fatalf("Could not scan file %s, err %v", path, err)
+	}
+
+	return members
 }

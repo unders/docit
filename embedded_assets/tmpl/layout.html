@@ -36,6 +36,15 @@
 		 {{end}}
 		</ul>
 	  {{end}}
+
+	  {{if .HasMember}}
+	    <h1>Members</h1>
+		<ul>
+	      {{range .Members}}
+		    <li><a href="mailto:{{.Email}}" target="_top">{{.Email}}</a></li>
+		 {{end}}
+		</ul>
+	  {{end}}
 	</div>
   </div>
  <script type="text/javascript" src="/embedded_assets/js/main.js"></script>
