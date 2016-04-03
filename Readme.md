@@ -15,10 +15,10 @@ docit serve -index=landing/index.md -root=test/Projects -help=landing/help.md
 
 ## TODOs
  - [x] Projects link: Show all projects unders -root when that link is clicked.
+ - [x] Import members from file.
+ - [x] List Members
+ - Add password protection.
  - Add embedded database (Bolt or SQL)
- - Add flag: -member-file for access control (a list of emails.); on start import into database.
- - Import members from file.
- - List Members
  - All Members should have the same password?
 
 ## Install
