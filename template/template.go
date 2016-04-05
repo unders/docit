@@ -29,8 +29,8 @@ type Data struct {
 	Name      string
 	Body      tmpl.HTML
 	Projects  []Project
-	HasProj   bool
 	Members   []Member
+	HasProj   bool
 	HasMember bool
 }
 

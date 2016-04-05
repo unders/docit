@@ -148,7 +148,7 @@ func readMembers(path string) []string {
 	if err != nil {
 		log.Fatalf("Could not open file %s, err %v", path, err)
 	}
-	defer file.Close()
+	defer closeFile(file)
 
 	scanner := bufio.NewScanner(file)
 	scanner.Split(bufio.ScanLines)
@@ -162,4 +162,10 @@ func readMembers(path string) []string {
 	}
 
 	return members
+}
+
+func closeFile(f *os.File) {
+	if err := f.Close(); err != nil {
+		log.Fatalf("Could not close file: %v, %v", f, err)
+	}
 }
