@@ -38,8 +38,8 @@ var page Page
 var data Data
 
 // Init initialize template
-func Init(box *rice.Box, d Data) {
-	data = d
+func Init(box *rice.Box, name string) {
+	data.Name = name
 
 	layout, err := box.String("layout.html")
 	if err != nil {

@@ -6,7 +6,6 @@ import (
 	"net/http"
 	"strings"
 
-	"github.com/unders/docit/cli"
 	"github.com/unders/docit/template"
 )
 
@@ -17,9 +16,9 @@ const dirErrMsg = "<pre style='word-wrap: break-word;" +
 	"white-space: pre-wrap;'>Projects dir could not be read</pre>"
 
 // Handle renders projects in root directory.
-func Handle(arg cli.Arg) func(http.ResponseWriter, *http.Request) {
+func Handle(root string) func(http.ResponseWriter, *http.Request) {
 	return func(w http.ResponseWriter, req *http.Request) {
-		dir, err := ioutil.ReadDir(arg.Root)
+		dir, err := ioutil.ReadDir(root)
 
 		if err != nil {
 			log.Printf("Could not read root directory.\n")

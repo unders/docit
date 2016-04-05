@@ -16,9 +16,13 @@ import (
 func main() {
 	switch cmd, arg := cli.Parse(); true {
 	case cmd == "serve":
-		drawRoutes(arg)
-		fmt.Printf("Serving static files at http://0.0.0.0:%s from dir %s\n", arg.Port, arg.Root)
+		template.Init(rice.MustFindBox("embedded_assets/tmpl"), arg.Name)
+
+		routes(arg)
+
+		fmt.Printf("Serve files at http://0.0.0.0:%s from %s\n", arg.Port, arg.Root)
 		log.Fatal(http.ListenAndServe(":"+arg.Port, nil))
+
 	case cmd == "version":
 		cli.PrintVersion()
 	default:
@@ -26,20 +30,15 @@ func main() {
 	}
 }
 
-func drawRoutes(arg cli.Arg) {
+func routes(arg cli.Arg) {
 	http.HandleFunc("/", root.Handle(arg))
-	http.HandleFunc("/projects", projects.Handle(arg))
+	http.HandleFunc("/projects", projects.Handle(arg.Root))
 	if arg.MemberFile != "" {
 		path := arg.Root + "/" + arg.MemberFile
 		http.HandleFunc("/members", members.Handle(path))
 	}
 
-	data := template.Data{
-		Name: arg.Name,
-	}
-	template.Init(rice.MustFindBox("embedded_assets/tmpl"), data)
-
-	box := rice.MustFindBox("embedded_assets")
-	embeddedFileServer := http.StripPrefix("/embedded_assets/", http.FileServer(box.HTTPBox()))
-	http.Handle("/embedded_assets/", embeddedFileServer)
+	fileServer := http.FileServer(rice.MustFindBox("embedded_assets").HTTPBox())
+	h := http.StripPrefix("/embedded_assets/", fileServer)
+	http.Handle("/embedded_assets/", h)
 }
