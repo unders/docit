@@ -62,7 +62,6 @@ func listDoc(root, p string) []template.Doc {
 			return []template.Doc{}
 		}
 		dir = dir + "doc/"
-		base = base + "doc/"
 	}
 
 	var docs []template.Doc
