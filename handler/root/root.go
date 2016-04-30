@@ -57,7 +57,7 @@ func listDoc(root, p string) []template.Doc {
 	base, _ := path.Split(p)
 	dir := root + base
 
-	if !strings.Contains(dir, "doc") {
+	if !strings.Contains(dir, "doc/") {
 		if _, err := os.Stat(dir + "doc/"); err != nil {
 			return []template.Doc{}
 		}
