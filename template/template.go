@@ -19,6 +19,12 @@ type Project struct {
 	Name string
 }
 
+// Doc struct for creating a link to a doc page
+type Doc struct {
+	Link string
+	Name string
+}
+
 // Member struct for creating a Member page.
 type Member struct {
 	Email string
@@ -30,8 +36,10 @@ type Data struct {
 	Body      tmpl.HTML
 	Projects  []Project
 	Members   []Member
+	Docs      []Doc
 	HasProj   bool
 	HasMember bool
+	HasDoc    bool
 }
 
 var page Page
@@ -53,10 +61,13 @@ func Init(box *rice.Box, name string) {
 }
 
 // Render a HTML page
-func Render(w http.ResponseWriter, b []byte, statusCode int) {
+func Render(w http.ResponseWriter, b []byte, docs []Doc, statusCode int) {
+	hasDoc := len(docs) != 0
 	d := Data{
-		Body: tmpl.HTML(b),
-		Name: data.Name,
+		Body:   tmpl.HTML(b),
+		Name:   data.Name,
+		Docs:   docs,
+		HasDoc: hasDoc,
 	}
 
 	render(w, d, statusCode)

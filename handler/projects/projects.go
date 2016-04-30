@@ -22,7 +22,7 @@ func Handle(root string) func(http.ResponseWriter, *http.Request) {
 
 		if err != nil {
 			log.Printf("Could not read root directory.\n")
-			template.Render(w, []byte(dirErrMsg),
+			template.Render(w, []byte(dirErrMsg), []template.Doc{},
 				http.StatusInternalServerError)
 		}
 
@@ -30,7 +30,7 @@ func Handle(root string) func(http.ResponseWriter, *http.Request) {
 
 		if length == 0 {
 			log.Printf("No directory found, len(dir) == %d\n", length)
-			template.Render(w, []byte(notFoundMsg),
+			template.Render(w, []byte(notFoundMsg), []template.Doc{},
 				http.StatusNotFound)
 		}
 

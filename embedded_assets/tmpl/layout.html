@@ -25,8 +25,16 @@
   </div>
   <div id="page" class="wide">
 	<div class="container">
-	  <div id="nav"></div>
 	  {{.Body}}
+
+	  {{if .HasDoc }}
+	    <h2>Doc</h2>
+	    <ul>
+	      {{range .Docs}}
+	        <li><a href="{{.Link}}">{{.Name}}</a></li>
+		  {{end}}
+		</ul>
+	  {{end}}
 
 	  {{if .HasProj}}
 	    <h1>Projects</h1>
