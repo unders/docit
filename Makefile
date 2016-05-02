@@ -27,7 +27,7 @@ depgraph:
 	godepgraph -s -horizontal github.com/unders/docit | dot -Tsvg -o doc/godepgraph.svg
 
 check:
-	gometalinter ./... --deadline=45s
+	gometalinter ./... --deadline=45s --vendor
 
 release: clean check
 	rice embed-go
