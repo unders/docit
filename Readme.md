@@ -18,6 +18,7 @@ docit serve -index=landing/index.md -root=test/Projects -help=landing/help.md
  - [x] Import members from file.
  - [x] List Members
  - add live reload of local file while
+ - search in all doc files (.md) .
  - Add password protection.
  - Add embedded database (Bolt or SQL)
  - Add url list.
