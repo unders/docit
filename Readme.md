@@ -17,6 +17,7 @@ docit serve -index=landing/index.md -root=test/Projects -help=landing/help.md
  - [x] Projects link: Show all projects unders -root when that link is clicked.
  - [x] Import members from file.
  - [x] List Members
+ - add live reload of local file while
  - Add password protection.
  - Add embedded database (Bolt or SQL)
  - Add url list.
