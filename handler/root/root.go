@@ -57,7 +57,7 @@ func listDoc(root, p string) []template.Doc {
 	base, _ := path.Split(p)
 	dir := root + base
 
-	if !strings.Contains(dir, "doc/") {
+	if !strings.Contains(dir, "/doc/") {
 		if _, err := os.Stat(dir + "doc/"); err != nil {
 			return []template.Doc{}
 		}
@@ -73,8 +73,8 @@ func listDoc(root, p string) []template.Doc {
 		link := filepath[len(root):]
 
 		name := ""
-		if i := strings.LastIndex(link, "doc/"); i != -1 {
-			name = link[i:]
+		if i := strings.LastIndex(link, "/doc/"); i != -1 {
+			name = link[i+1:]
 		} else {
 			_, name = path.Split(filepath)
 		}
