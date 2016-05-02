@@ -14,6 +14,9 @@ help:
 deps:
 	@bin/deps install
 
+vendor:
+	@bin/vendor
+
 install:
 	go install $(LDFLAGS)
 

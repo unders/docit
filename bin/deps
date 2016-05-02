@@ -12,10 +12,11 @@ main() {
 		# go get -u github.com/shurcooL/markdownfmt
 
 		echo "Installing dev dependencies..."
-		go get golang.org/x/tools/cmd/oracle
-		go get github.com/fzipp/pythia
-		go get github.com/kisielk/godepgraph
-		go get github.com/alecthomas/gometalinter
+		go get -u github.com/FiloSottile/gvt
+		go get -u golang.org/x/tools/cmd/oracle
+		go get -u github.com/fzipp/pythia
+		go get -u github.com/kisielk/godepgraph
+		go get -u github.com/alecthomas/gometalinter
 		gometalinter --install --update
 
 		# FIXME: Check if OSX and only then install it.

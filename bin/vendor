@@ -1,0 +1,17 @@
+#!/usr/bin/env bash
+
+## Downloads imports into the vendor folder.
+
+main() {
+	pkgs=$(go list -f '{{join .Deps "\n"}}' | \
+				  xargs go list -f '{{if not .Standard}}{{.ImportPath}}{{end}}')
+
+	for pkg in $pkgs
+	do
+		if [[ "$pkg" != *github.com/unders/docit* ]]; then
+			gvt fetch "$pkg"
+		fi
+	done
+}
+
+main
