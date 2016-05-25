@@ -48,6 +48,14 @@ func Handle(arg cli.Arg) func(w http.ResponseWriter, req *http.Request) {
 			return
 		}
 
+		// Parse and serve Gherkin files
+		if strings.HasSuffix(req.URL.Path, ".feature") {
+			html, code := loadFeaturePage(arg.Root + req.URL.Path)
+			docs := listDoc(arg.Root, req.URL.Path)
+			template.Render(w, html, docs, code)
+			return
+		}
+
 		// Serve file relative to root dir.
 		fileServer.ServeHTTP(w, req)
 	}
@@ -101,6 +109,22 @@ func loadPage(filename string) ([]byte, int) {
 		log.Printf("Markdown file %s not found. Error: %v\n", filename, err)
 		return []byte(notFoundMsg), http.StatusNotFound
 	}
+
+	html := blackfriday.MarkdownCommon(markdown)
+
+	return html, http.StatusOK
+}
+
+func loadFeaturePage(filename string) ([]byte, int) {
+	contents, err := ioutil.ReadFile(filename)
+	if err != nil {
+		log.Printf("Feature file %s not found. Error: %v\n", filename, err)
+		return []byte(notFoundMsg), http.StatusNotFound
+	}
+
+	markdown := []byte("```gherkin\n")
+	markdown = append(markdown, contents...)
+	markdown = append(markdown, []byte("\n```")...)
 
 	html := blackfriday.MarkdownCommon(markdown)
 
