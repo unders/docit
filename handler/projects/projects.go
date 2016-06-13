@@ -4,6 +4,8 @@ import (
 	"io/ioutil"
 	"log"
 	"net/http"
+	"os"
+	"path/filepath"
 	"strings"
 
 	"github.com/unders/docit/template"
@@ -14,6 +16,32 @@ const notFoundMsg = "<pre style='word-wrap: break-word;" +
 
 const dirErrMsg = "<pre style='word-wrap: break-word;" +
 	"white-space: pre-wrap;'>Projects dir could not be read</pre>"
+
+func isProject(root string, f os.FileInfo) bool {
+	if f.IsDir() {
+		return true
+	}
+
+	if f.Mode()&os.ModeSymlink == 0 {
+		return false
+	}
+
+	dir, err := os.Readlink(root + "/" + f.Name())
+	if err != nil {
+		return false
+	}
+
+	if !filepath.IsAbs(dir) {
+		dir = root + "/" + dir
+	}
+
+	fileInfo, err := os.Stat(dir)
+	if err != nil {
+		return false
+	}
+
+	return fileInfo.IsDir()
+}
 
 // Handle renders projects in root directory.
 func Handle(root string) func(http.ResponseWriter, *http.Request) {
@@ -37,7 +65,7 @@ func Handle(root string) func(http.ResponseWriter, *http.Request) {
 		projects := make([]template.Project, length)
 
 		for i, file := range dir {
-			if file.IsDir() {
+			if isProject(root, file) {
 				name := file.Name()
 
 				proj := template.Project{
